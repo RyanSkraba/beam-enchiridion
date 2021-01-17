@@ -413,6 +413,7 @@
 
   <modules>
     <module>core</module>
+    <module>core-scala</module>
   </modules>
 
 </project>
