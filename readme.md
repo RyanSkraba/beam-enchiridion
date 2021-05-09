@@ -33,6 +33,7 @@ Modules
 | ------------- | ------------- |
 | [core](core/readme.md)  | Examples for the beam core Java SDK.  |
 | [core-scala](core-scala/readme.md)  | Examples for the beam core Java SDK in Scala (but not [scio][scio]).  |
+| [io-files](io-files/readme.md)  | Examples for reading from and writing to files.  |
 
 [scio]: https://github.com/spotify/scio
 
