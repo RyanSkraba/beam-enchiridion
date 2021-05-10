@@ -1,5 +1,6 @@
 package com.skraba.beam.echiridion.core.scala
 
+import org.apache.beam.sdk.options.{PipelineOptions, PipelineOptionsFactory}
 import org.apache.beam.sdk.testing.{PAssert, TestPipeline}
 import org.apache.beam.sdk.transforms.{
   Create,
@@ -40,6 +41,14 @@ class BeamCoreSdkSpec
 
       // Run the test.
       pipeline.run();
+    }
+
+    it("can create pipeline options.") {
+      val args: Array[String] = Array("--jobName=MyJob")
+      val options: PipelineOptions =
+        PipelineOptionsFactory.fromArgs(args: _*).create()
+
+      options.getJobName shouldBe "MyJob"
     }
 
     it("can run a map.") {
