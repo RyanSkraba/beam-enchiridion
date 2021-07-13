@@ -1,5 +1,5 @@
 The Enchiridion: Beam Core (Scala)
-==================================
+==============================================================================
 
 Examples for the beam core Java SDK in Scala.
 
@@ -8,7 +8,7 @@ Examples for the beam core Java SDK in Scala.
 However: byte-code is byte-code.  You _can_ use the Java SDK with Scala, and this module demonstrates some of the techniques.
 
 Notes (TL;DR)
--------------
+------------------------------------------------------------------------------
 
 - Explicitly use `java.lang.Boolean` types instead of `scala.Boolean`.
 - Avoid inlining lambdas.  Declare your lambdas in a `val` with the exact type you need.

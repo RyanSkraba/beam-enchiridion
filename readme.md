@@ -1,5 +1,5 @@
 The Beam Enchiridion
-====================
+==============================================================================
 
 ![Java CI](https://github.com/RyanSkraba/beam-enchiridion/workflows/Java%20CI/badge.svg)
 
@@ -12,7 +12,7 @@ _[**Enchiridion**](https://en.wikipedia.org/wiki/Enchiridion): **A small manual 
 This project describes how to do many common tasks using [Beam](https://beam.apache.org).
 
 Topics
-------
+------------------------------------------------------------------------------
 
 | I want to... | See... |
 | ------------- | ------------- |
@@ -24,10 +24,10 @@ Topics
 | state | | 
 | metrics | | 
 | streaming | | 
-| my own windowing function | | 
+| my own windowing function | |
 
 Modules
--------
+------------------------------------------------------------------------------
 
 | module  | description |
 | ------------- | ------------- |
@@ -37,9 +37,8 @@ Modules
 
 [scio]: https://github.com/spotify/scio
 
-
 Running with a locally-built SNAPSHOT
--------------------------------------
+------------------------------------------------------------------------------
 
 ```bash
 # Build beam artifacts and publish to /tmp/snapshots/
@@ -50,5 +49,3 @@ cd beam
 cd beam-enchiridion
 mvn -Dbeam.version=2.x.0-SNAPSHOT -Plocal-snapshot clean install
 ```
-
-
