@@ -14,26 +14,26 @@ This project describes how to do many common tasks using [Beam](https://beam.apa
 Topics
 ------------------------------------------------------------------------------
 
-| I want to... | See... |
-| ------------- | ------------- |
-| write a simple ParDo | [ThrowDart](core/src/main/java/com/skraba/beam/enchiridion/core/pi/ThrowDart.java), [MeasureDistanceDoFn](core/src/main/java/com/skraba/beam/enchiridion/core/pi/MeasureDistanceDoFn.java) ([_test_](core/src/test/java/com/skraba/beam/enchiridion/core/pi/MeasureDistanceDoFnTest.java))| 
-| write a composite PTransform | [MonteCarloPiTransform](core/src/main/java/com/skraba/beam/enchiridion/core/pi/MonteCarloPiTransform.java) ([_test_](core/src/test/java/com/skraba/beam/enchiridion/core/pi/MonteCarloPiTransformTest.java))|
-| write a source | | 
-| write a sdf | | 
-| side input | | 
-| state | | 
-| metrics | | 
-| streaming | | 
-| my own windowing function | |
+| I want to...                 | See...                                                                                                                                                                                                                                                                                     |
+|------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| write a simple ParDo         | [ThrowDart](core/src/main/java/com/skraba/beam/enchiridion/core/pi/ThrowDart.java), [MeasureDistanceDoFn](core/src/main/java/com/skraba/beam/enchiridion/core/pi/MeasureDistanceDoFn.java) ([_test_](core/src/test/java/com/skraba/beam/enchiridion/core/pi/MeasureDistanceDoFnTest.java)) |  |
+| write a composite PTransform | [MonteCarloPiTransform](core/src/main/java/com/skraba/beam/enchiridion/core/pi/MonteCarloPiTransform.java) ([_test_](core/src/test/java/com/skraba/beam/enchiridion/core/pi/MonteCarloPiTransformTest.java))                                                                               |
+| write a source               |                                                                                                                                                                                                                                                                                            |  |
+| write a sdf                  |                                                                                                                                                                                                                                                                                            |  |
+| side input                   |                                                                                                                                                                                                                                                                                            |  |
+| state                        |                                                                                                                                                                                                                                                                                            |  |
+| metrics                      |                                                                                                                                                                                                                                                                                            |  |
+| streaming                    |                                                                                                                                                                                                                                                                                            |  |
+| my own windowing function    |                                                                                                                                                                                                                                                                                            |
 
 Modules
 ------------------------------------------------------------------------------
 
-| module  | description |
-| ------------- | ------------- |
-| [core](core/readme.md)  | Examples for the beam core Java SDK.  |
-| [core-scala](core-scala/readme.md)  | Examples for the beam core Java SDK in Scala (but not [scio][scio]).  |
-| [io-files](io-files/readme.md)  | Examples for reading from and writing to files.  |
+| module                             | description                                                          |
+|------------------------------------|----------------------------------------------------------------------|
+| [core](core/readme.md)             | Examples for the beam core Java SDK.                                 |
+| [core-scala](core-scala/readme.md) | Examples for the beam core Java SDK in Scala (but not [scio][scio]). |
+| [io-files](io-files/readme.md)     | Examples for reading from and writing to files.                      |
 
 [scio]: https://github.com/spotify/scio
 
