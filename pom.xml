@@ -11,14 +11,16 @@
   <packaging>pom</packaging>
 
   <properties>
+    <!-- specifies that the system uses Java 11 by default -->
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+
     <!-- skip the deployment for aggregators, not necessary.  Needs to be flipped to false
      for modules with artifacts. -->
     <maven.deploy.skip>true</maven.deploy.skip>
+
     <!-- Shared properties by all sub-projects -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <!-- specifies that the system uses Java 8 by default -->
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
 
     <!-- Dependencies -->
     <beam.version>2.28.0</beam.version>
@@ -27,21 +29,29 @@
     <junit4.version>4.13.1</junit4.version>
     <play.json.version>2.9.2</play.json.version>
     <scala.minor.version>2.12</scala.minor.version>
-    <scala.version>2.12.13</scala.version>
+    <scala.version>2.12.14</scala.version>
     <scalafmt.version>2.7.5</scalafmt.version>
     <spotless.version>1.25.1</spotless.version>
-    <scalatest.version>3.2.2</scalatest.version>
-    <slf4j.version>1.7.30</slf4j.version>
+    <scalatest.version>3.2.9</scalatest.version>
+    <slf4j.version>1.7.32</slf4j.version>
 
     <!-- Plugins -->
+    <plugin.clean.maven.version>2.5</plugin.clean.maven.version>
+    <plugin.compiler.maven.version>3.1</plugin.compiler.maven.version>
+    <plugin.deploy.maven.version>2.7</plugin.deploy.maven.version>
     <plugin.enforcer.maven.version>3.0.0-M3</plugin.enforcer.maven.version>
     <plugin.failsafe.maven.version>3.0.0-M5</plugin.failsafe.maven.version>
+    <plugin.install.maven.version>2.4</plugin.install.maven.version>
     <plugin.jar.maven.version>3.2.0</plugin.jar.maven.version>
     <plugin.maven.scala.version>4.4.0</plugin.maven.scala.version>
     <plugin.maven.scalatest.version>2.0.2</plugin.maven.scalatest.version>
+    <plugin.resources.maven.version>2.6</plugin.resources.maven.version>
     <plugin.shade.maven.version>3.2.4</plugin.shade.maven.version>
+    <plugin.site.maven.version>3.3</plugin.site.maven.version>
     <plugin.spotless.version>2.7.0</plugin.spotless.version>
     <plugin.surefire.maven.version>3.0.0-M5</plugin.surefire.maven.version>
+    <plugin.war.maven.version>2.2</plugin.war.maven.version>
+
   </properties>
 
   <profiles>
@@ -114,6 +124,23 @@
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${plugin.clean.maven.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${plugin.compiler.maven.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>${plugin.deploy.maven.version}</version>
+        </plugin>
 
         <!-- Minimum version of maven to build this project -->
         <plugin>
@@ -131,14 +158,25 @@
                   <requireMavenVersion>
                     <version>3.5</version>
                   </requireMavenVersion>
+                  <requirePluginVersions>
+                    <banLatest>true</banLatest>
+                    <banRelease>true</banRelease>
+                  </requirePluginVersions>
                 </rules>
               </configuration>
             </execution>
           </executions>
         </plugin>
 
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${plugin.install.maven.version}</version>
+        </plugin>
+
         <!-- Add the main class name to the jar -->
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.2.0</version>
           <configuration>
@@ -150,7 +188,13 @@
           </configuration>
         </plugin>
 
-        <!-- Shaded fat jar with all dependencies -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${plugin.resources.maven.version}</version>
+        </plugin>
+
+        <!-- Shaded uber jar with all dependencies -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
@@ -178,6 +222,12 @@
           </executions>
         </plugin>
 
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${plugin.site.maven.version}</version>
+        </plugin>
+
         <!-- Launch scalatests as well as Java -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -195,6 +245,12 @@
         <plugin>
           <artifactId>maven-failsafe-plugin</artifactId>
           <version>${plugin.failsafe.maven.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>${plugin.war.maven.version}</version>
         </plugin>
 
         <!-- Build both java and scala classes, and they can rely on each other. -->
@@ -288,17 +344,9 @@
     </plugins>
   </build>
 
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-report-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </reporting>
-
   <dependencyManagement>
     <dependencies>
+      <!-- All of the artifacts published by the Apache Beam project -->
       <dependency>
         <groupId>org.apache.beam</groupId>
         <artifactId>beam-runners-spark</artifactId>
@@ -380,6 +428,15 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
 
   <dependencies>
     <!-- Tests -->
