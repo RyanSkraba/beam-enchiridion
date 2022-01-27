@@ -1,14 +1,19 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.skraba.beam.enchiridion</groupId>
   <artifactId>beam-enchiridion</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
   <name>Beam Enchiridion :: Parent</name>
-  <packaging>pom</packaging>
+
+  <modules>
+    <module>core</module>
+    <module>core-scala</module>
+    <module>io-files</module>
+  </modules>
 
   <properties>
     <!-- specifies that the system uses Java 11 by default -->
@@ -53,72 +58,125 @@
     <plugin.war.maven.version>2.2</plugin.war.maven.version>
   </properties>
 
-  <profiles>
-    <!--
-      Use this profile if using Beam SNAPSHOT artifacts that were built locally, such as:
-      ./gradlew -Ppublishing -PdistMgmtSnapshotsUrl=/tmp/snapshots/ -p sdks/java/io/parquet/ publish
-    -->
-    <profile>
-      <id>local-snapshots</id>
-      <repositories>
-        <repository>
-          <id>local.snapshots</id>
-          <name>Local Snapshot Repository</name>
-          <url>file:///tmp//snapshots/</url>
-          <releases>
-            <enabled>false</enabled>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
-        </repository>
-      </repositories>
-    </profile>
+  <dependencyManagement>
+    <dependencies>
+      <!-- All of the artifacts published by the Apache Beam project -->
+      <dependency>
+        <groupId>org.apache.beam</groupId>
+        <artifactId>beam-runners-spark</artifactId>
+        <version>${beam.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.beam</groupId>
+        <artifactId>beam-runners-direct-java</artifactId>
+        <version>${beam.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.beam</groupId>
+        <artifactId>beam-sdks-java-core</artifactId>
+        <version>${beam.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.beam</groupId>
+        <artifactId>beam-sdks-java-nexmark</artifactId>
+        <version>${beam.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.beam</groupId>
+        <artifactId>beam-sdks-java-io-amazon-web-services</artifactId>
+        <version>${beam.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-common</artifactId>
+        <version>${hadoop.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-mapreduce-client-core</artifactId>
+        <version>${hadoop.version}</version>
+      </dependency>
 
-    <!--
-      Use this profile if using SNAPSHOT artifacts built by Apache.
-    -->
-    <profile>
-      <id>apache-snapshots</id>
-      <repositories>
-        <repository>
-          <id>apache.snapshots</id>
-          <name>Apache Development Snapshot Repository</name>
-          <url>https://repository.apache.org/content/repositories/snapshots/</url>
-          <releases>
-            <enabled>false</enabled>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
-        </repository>
-      </repositories>
-    </profile>
+      <!-- Scala -->
+      <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-library</artifactId>
+        <version>${scala.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.typesafe.play</groupId>
+        <artifactId>play-json_${scala.minor.version}</artifactId>
+        <version>${play.json.version}</version>
+      </dependency>
 
-    <!--
-      Use this profile if using Apache staging release artifacts.
-    -->
-    <profile>
-      <id>apache-staging</id>
-      <repositories>
-        <repository>
-          <id>apache.staging</id>
-          <name>Apache Development Staging Repository</name>
-          <url>https://repository.apache.org/content/repositories/staging/</url>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-        </repository>
-      </repositories>
-      <pluginRepositories>
-        <pluginRepository>
-          <id>apache.staging</id>
-          <name>Apache Development Staging Repository</name>
-          <url>https://repository.apache.org/content/repositories/staging/</url>
-        </pluginRepository>
-      </pluginRepositories>
-    </profile>
-  </profiles>
+      <!-- Tests -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit4.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest-core</artifactId>
+        <version>${hamcrest.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest-library</artifactId>
+        <version>${hamcrest.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.scalatest</groupId>
+        <artifactId>scalatest_${scala.minor.version}</artifactId>
+        <version>${scalatest.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf4j.version}</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- Tests -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- All unit tests use direct runner -->
+    <dependency>
+      <groupId>org.apache.beam</groupId>
+      <artifactId>beam-runners-direct-java</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-library</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest_${scala.minor.version}</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
   <build>
     <pluginManagement>
@@ -213,10 +271,10 @@
           </configuration>
           <executions>
             <execution>
-              <phase>package</phase>
               <goals>
                 <goal>shade</goal>
               </goals>
+              <phase>package</phase>
             </execution>
           </executions>
         </plugin>
@@ -260,18 +318,18 @@
           <executions>
             <execution>
               <id>scala-compile-first</id>
-              <phase>process-resources</phase>
               <goals>
                 <goal>add-source</goal>
                 <goal>compile</goal>
               </goals>
+              <phase>process-resources</phase>
             </execution>
             <execution>
               <id>scala-test-compile</id>
-              <phase>process-test-resources</phase>
               <goals>
                 <goal>testCompile</goal>
               </goals>
+              <phase>process-test-resources</phase>
             </execution>
           </executions>
         </plugin>
@@ -283,8 +341,8 @@
           <version>${plugin.spotless.version}</version>
           <configuration>
             <java>
-              <removeUnusedImports />
-              <googleJavaFormat />
+              <removeUnusedImports/>
+              <googleJavaFormat/>
             </java>
             <pom>
               <sortPom>
@@ -348,91 +406,6 @@
     </plugins>
   </build>
 
-  <dependencyManagement>
-    <dependencies>
-      <!-- All of the artifacts published by the Apache Beam project -->
-      <dependency>
-        <groupId>org.apache.beam</groupId>
-        <artifactId>beam-runners-spark</artifactId>
-        <version>${beam.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.beam</groupId>
-        <artifactId>beam-runners-direct-java</artifactId>
-        <version>${beam.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.beam</groupId>
-        <artifactId>beam-sdks-java-core</artifactId>
-        <version>${beam.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.beam</groupId>
-        <artifactId>beam-sdks-java-nexmark</artifactId>
-        <version>${beam.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.beam</groupId>
-        <artifactId>beam-sdks-java-io-amazon-web-services</artifactId>
-        <version>${beam.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.hadoop</groupId>
-        <artifactId>hadoop-common</artifactId>
-        <version>${hadoop.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.hadoop</groupId>
-        <artifactId>hadoop-mapreduce-client-core</artifactId>
-        <version>${hadoop.version}</version>
-      </dependency>
-
-      <!-- Scala -->
-      <dependency>
-        <groupId>org.scala-lang</groupId>
-        <artifactId>scala-library</artifactId>
-        <version>${scala.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.typesafe.play</groupId>
-        <artifactId>play-json_${scala.minor.version}</artifactId>
-        <version>${play.json.version}</version>
-      </dependency>
-
-      <!-- Tests -->
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${junit4.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.hamcrest</groupId>
-        <artifactId>hamcrest-core</artifactId>
-        <version>${hamcrest.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.hamcrest</groupId>
-        <artifactId>hamcrest-library</artifactId>
-        <version>${hamcrest.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.scalatest</groupId>
-        <artifactId>scalatest_${scala.minor.version}</artifactId>
-        <version>${scalatest.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-simple</artifactId>
-        <version>${slf4j.version}</version>
-        <scope>test</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <reporting>
     <plugins>
       <plugin>
@@ -442,45 +415,71 @@
     </plugins>
   </reporting>
 
-  <dependencies>
-    <!-- Tests -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <!-- All unit tests use direct runner -->
-    <dependency>
-      <groupId>org.apache.beam</groupId>
-      <artifactId>beam-runners-direct-java</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-library</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.scalatest</groupId>
-      <artifactId>scalatest_${scala.minor.version}</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+  <profiles>
+    <!--
+      Use this profile if using Beam SNAPSHOT artifacts that were built locally, such as:
+      ./gradlew -Ppublishing -PdistMgmtSnapshotsUrl=/tmp/snapshots/ -p sdks/java/io/parquet/ publish
+    -->
+    <profile>
+      <id>local-snapshots</id>
+      <repositories>
+        <repository>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <id>local.snapshots</id>
+          <name>Local Snapshot Repository</name>
+          <url>file:///tmp//snapshots/</url>
+        </repository>
+      </repositories>
+    </profile>
 
-  <modules>
-    <module>core</module>
-    <module>core-scala</module>
-    <module>io-files</module>
-  </modules>
+    <!--
+      Use this profile if using SNAPSHOT artifacts built by Apache.
+    -->
+    <profile>
+      <id>apache-snapshots</id>
+      <repositories>
+        <repository>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <id>apache.snapshots</id>
+          <name>Apache Development Snapshot Repository</name>
+          <url>https://repository.apache.org/content/repositories/snapshots/</url>
+        </repository>
+      </repositories>
+    </profile>
+
+    <!--
+      Use this profile if using Apache staging release artifacts.
+    -->
+    <profile>
+      <id>apache-staging</id>
+      <repositories>
+        <repository>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <id>apache.staging</id>
+          <name>Apache Development Staging Repository</name>
+          <url>https://repository.apache.org/content/repositories/staging/</url>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>apache.staging</id>
+          <name>Apache Development Staging Repository</name>
+          <url>https://repository.apache.org/content/repositories/staging/</url>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
 
 </project>
